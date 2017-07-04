@@ -1,21 +1,46 @@
-var strictColor = false;
+var container;
+var changeColor;
+var resetColor;
+var originalColor;
+var permaColor;
+var perma;
+var counter = 0;
+var colorMemory;
 
-$(document).ready(function() {
+window.onload = function(event) {
+	container = document.getElementById("big");
+	var containerStyle = window.getComputedStyle(container);
 
-  $(".color").mouseenter(function(){
-      $("#big").css("background-color", $(this).css("background-color"));
-      strictColor = false;
-  });
+	originalColor = containerStyle.backgroundColor;
 
-  $(".color").mouseleave(function(){
-    if (strictColor === false) {
-        $("#big").css("background-color","red");
-    }
-  });
+	perma = true;
 
-  $(".color").click(function(){
-      $("#big").css("background-color",$(this).css("background-color"));
-      strictColor = true;
-  });
-  
-});
+
+	changeColor = function(elem) {
+
+		var elemStyle = window.getComputedStyle(elem);
+		container.style.backgroundColor = elemStyle.backgroundColor;
+		if(counter > 0 ){
+			perma = false;
+		}
+		else{
+			perma = true;
+		}
+	}
+	resetColor = function() {
+		if(perma){
+			container.style.backgroundColor = originalColor;
+		   }
+		else{
+			container.style.backgroundColor = colorMemory;
+		}
+	}
+
+	permaColor = function(elem){
+		var elemStyle = window.getComputedStyle(elem);
+		container.style.backgroundColor = elemStyle.backgroundColor;
+		colorMemory =  elemStyle.backgroundColor;
+		perma = false;
+		counter ++;
+	}
+}
